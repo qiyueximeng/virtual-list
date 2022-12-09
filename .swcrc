@@ -1,0 +1,16 @@
+{
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "decorators": true,
+      "dynamicImport": true,
+      "topLevelAwait": false,
+      "importMeta": true
+    },
+    "target": "es2017",
+    "loose": true,
+    "keepClassNames": true
+  },
+  "isModule": true,
+  "sourceMaps": true
+}
