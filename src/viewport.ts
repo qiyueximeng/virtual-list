@@ -8,8 +8,8 @@ export interface IViewportInfo {
 export interface IViewportProps {
   scroller: HTMLDivElement;
   onScrollStart: (info: IViewportInfo) => void;
-  onScroll: (info: IViewportInfo) => void;
   onScrollEnd: (info: IViewportInfo) => void;
+  updateViewport: (info: IViewportInfo) => void;
 }
 
 const SCROLL_END_DEBOUNCE_TIME = 300;
@@ -22,7 +22,7 @@ export class Viewport {
   private scrolling = false;
   private scroller: IViewportProps['scroller'];
   private onScrollStart: IViewportProps['onScrollStart'];
-  private onScroll: IViewportProps['onScroll'];
+  private updateViewport: IViewportProps['updateViewport'];
   private onScrollEnd: IViewportProps['onScrollEnd'];
   private scrollTop = 0;
   private height = 0;
@@ -34,14 +34,15 @@ export class Viewport {
     }
   }
 
-  constructor({ scroller, onScrollStart, onScroll, onScrollEnd }: IViewportProps) {
+  constructor({ scroller, onScrollStart, updateViewport, onScrollEnd }: IViewportProps) {
     this.scroller = scroller;
     this.onScrollStart = onScrollStart;
-    this.onScroll = onScroll;
+    this.updateViewport = updateViewport;
     this.onScrollEnd = onScrollEnd;
 
     this.height = this.scroller.offsetHeight;
     this.bindEvent('on');
+    this.updateViewport(this.info);
   }
 
   bindEvent(action: 'on' | 'off') {
@@ -59,7 +60,7 @@ export class Viewport {
       this.scrollStart();
     }
 
-    this.onScroll(this.info);
+    this.updateViewport(this.info);
 
     this.scrollEnd();
   }
