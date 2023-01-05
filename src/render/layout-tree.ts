@@ -25,7 +25,6 @@ export class LayoutTree {
     let belowHeight = 0;
 
     for (const node of this.layoutNodes) {
-
       const currMarginTop = preNode ? Math.max(preNode.marginBottom, node.marginTop) : 0;
       const currHeight = currMarginTop + node.height;
       const currBottom = currTop + currHeight;

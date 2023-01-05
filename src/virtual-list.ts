@@ -17,21 +17,34 @@ export class VirtualList {
   private buffer: number;
   private itemGenerator: (item: Pick<LayoutNode, 'id'>) => HTMLElement;
   private caches: Map<LayoutNode['id'], HTMLElement> = new Map();
-  private $list = document.createElement('div');
+  private $list: HTMLDivElement;
   private $placeholders: HTMLDivElement[] = []
 
-  constructor({ scroller, onScrollStart, onScrollEnd, config: { buffer, layoutNodeConfigs }, itemGenerator }: IVirtualListProps) {
+  constructor({
+    scroller,
+    onScrollStart,
+    onScrollEnd,
+    config: { buffer, layoutNodeConfigs },
+    itemGenerator
+  }: IVirtualListProps) {
+    this.initListElm();
+
     scroller.appendChild(this.$list);
-    this.buffer = buffer ?? (this.viewport.info.height / 2);
+    this.buffer = buffer ?? (document.body.offsetHeight / 2);
     this.layoutTree = new LayoutTree({ layoutNodeConfigs });
     this.itemGenerator = itemGenerator;
-
     this.viewport = new Viewport({
       scroller,
       onScrollStart,
       updateViewport: this.updateViewport.bind(this),
       onScrollEnd
     });
+  }
+
+  private initListElm() {
+    this.$list = document.createElement('div');
+    this.$list.style.position = 'relative';
+    return this.$list;
   }
 
   updateViewport(info: IViewportInfo) {

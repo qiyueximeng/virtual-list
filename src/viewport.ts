@@ -34,7 +34,12 @@ export class Viewport {
     }
   }
 
-  constructor({ scroller, onScrollStart, updateViewport, onScrollEnd }: IViewportProps) {
+  constructor({
+    scroller,
+    onScrollStart,
+    updateViewport,
+    onScrollEnd
+  }: IViewportProps) {
     this.scroller = scroller;
     this.onScrollStart = onScrollStart;
     this.updateViewport = updateViewport;
@@ -53,10 +58,9 @@ export class Viewport {
     }
   }
 
-  handleScroll() {
+  private handleScroll() {
     this.scrollTop = this.scroller.scrollTop;
     if (!this.scrolling) {
-      this.scrolling = true;
       this.scrollStart();
     }
 
@@ -65,11 +69,12 @@ export class Viewport {
     this.scrollEnd();
   }
 
-  scrollStart() {
+  private scrollStart() {
+    this.scrolling = true;
     this.onScrollStart(this.info);
   }
 
-  scrollEnd = debounce(() => {
+  private scrollEnd = debounce(() => {
     this.scrolling = false;
     this.onScrollEnd(this.info);
   }, SCROLL_END_DEBOUNCE_TIME);
